@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://172.19.121.5:3306/db_sell?useUnicode=true&characterEncoding=utf8&verifyServerCertificate=false&\
+          useSSL=false&requireSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: 123456
+  jpa:
+    show-sql: true
+server:
+  context-path: /sell
+#logging:
+#  pattern:
+#    console:  "%d - %msg%n"
+#  path:
