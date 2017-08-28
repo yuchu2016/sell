@@ -2,12 +2,17 @@ package com.yuchu.service.Impl;
 
 import com.yuchu.dao.ProductInfoDao;
 import com.yuchu.domain.ProductInfo;
+import com.yuchu.dto.CartDTO;
+import com.yuchu.dto.CartDTO;
 import com.yuchu.enums.ProductStatus;
+import com.yuchu.enums.ResultEnum;
+import com.yuchu.exception.SellException;
 import com.yuchu.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -41,5 +46,28 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductInfo save(ProductInfo productInfo) {
         return dao.save(productInfo);
+    }
+
+    @Override
+    public void increaseStock(List<CartDTO> cartDTOList) {
+
+    }
+
+    @Override
+    @Transactional
+    public void decreaseStock(List<CartDTO> cartDTOList) {
+        for(CartDTO cartDTO:cartDTOList){
+            ProductInfo productInfo = dao.findOne(cartDTO.getProductId());
+            if (productInfo == null)
+                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            Integer result = productInfo.getProductStock() -cartDTO.getProductQuantity();
+            if (result<0){
+                throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
+            }
+
+            productInfo.setProductStock(result);
+            dao.save(productInfo);
+
+        }
     }
 }
