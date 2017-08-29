@@ -1,8 +1,11 @@
 package com.yuchu.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yuchu.domain.OrderDetail;
 import com.yuchu.enums.OrderStatus;
 import com.yuchu.enums.PayStatus;
+import com.yuchu.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -16,6 +19,7 @@ import java.util.List;
  * @Modified By:
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
 
     /*订单Id*/
@@ -43,9 +47,11 @@ public class OrderDTO {
     private Integer payStatus;
 
     /*创建时间 */
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
     /*修改时间*/
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     private List<OrderDetail> orderDetailList;
